@@ -81,13 +81,13 @@ jobs:
           ls -R
       - name: Install Wheel  
         run:
-          pip install setuptools wheel
+          python3.11 -m pip install setuptools wheel
       - name: Install Pytorch
         run: |
-          pip3 install torch==2.4.0 --index-url https://download.pytorch.org/whl/cu121
+          python3.11 -m pip install torch==2.4.0 --index-url https://download.pytorch.org/whl/cu121
       - name: Generate Wheels
         run: |
-          python3 setup.py bdist_wheel --plat-name linux_x86_64
+          python3.11 setup.py bdist_wheel --plat-name linux_x86_64
         env:
           INCLUDE_ARCH: ${{ matrix.arch }} 
           FORCE_CUDA: 1
