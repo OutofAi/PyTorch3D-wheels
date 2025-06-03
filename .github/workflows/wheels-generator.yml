@@ -4,22 +4,23 @@ on:
 env:
   PYTORCH_3D_VERSION: "0.7.8"
 jobs:
+  
   build-tag:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
+          
       - name: Install GitHub CLI
         run: |
           sudo apt-get update
           sudo apt-get install -y gh
-
+  
       - name: Create Release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
         with:
           tag_name: ${{ env.PYTORCH_3D_VERSION }}
           release_name: ${{ env.PYTORCH_3D_VERSION }}
@@ -27,6 +28,7 @@ jobs:
           prerelease: false
 
   build_linux:
+    # needs: build-tag
     name: Build on linux systems
     runs-on: ${{ matrix.os }}
     container:
@@ -38,63 +40,54 @@ jobs:
             cuda: nvidia/cuda:12.1.0-devel-ubuntu22.04
             cudaversion: 121
             torchversion: 240
-            arch: 'Ampere'
+            arch: 'Ampere' # for a100 on google colab
           - os: ubuntu-22.04
             cuda: nvidia/cuda:12.1.0-devel-ubuntu22.04
             cudaversion: 121
             torchversion: 240
-            arch: 'Ada'
+            arch: 'Ada' 
     env:
       build_dir: "build"
       config: "Release"
       TCNN_CUDA_ARCHITECTURES: ${{ matrix.arch }}
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v3
+      - name: Install Git and Python
+        run: |
+          apt-get update
+          apt-get install -y git python3 python3-pip
+          
+      - name: Install GitHub CLI
+        run: |
+          apt-get update
+          apt-get install -y gh
+          
+      - uses: actions/checkout@v3
         with:
           repository: 'facebookresearch/pytorch3d'
           submodules: 'recursive'
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Use Python 3.11
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-      
-      - name: Verify Python version
-        run: |
-          python --version
-          pip --version
-
-      - name: Install Git
-        run: |
-          apt-get update
-          apt-get install -y git
-
-      - name: Install Wheel
-        run: |
-          pip install --upgrade pip setuptools wheel
-
-      - name: Install PyTorch 2.4.0 (CUDA 12.1)
-        run: |
-          pip install torch==2.4.0 --index-url https://download.pytorch.org/whl/cu121
-
+          
       - name: List directory structure
         run: |
           ls -R
-
+      - name: Install Wheel  
+        run:
+          pip install setuptools wheel
+      - name: Install Pytorch
+        run: |
+          pip3 install torch==2.4.0 --index-url https://download.pytorch.org/whl/cu121
       - name: Generate Wheels
         run: |
-          python setup.py bdist_wheel --plat-name linux_x86_64
+          python3 setup.py bdist_wheel --plat-name linux_x86_64
         env:
-          INCLUDE_ARCH: ${{ matrix.arch }}
+          INCLUDE_ARCH: ${{ matrix.arch }} 
           FORCE_CUDA: 1
-          TORCH_CUDA_ARCH_LIST: ${{ matrix.arch }}
-
+          TORCH_CUDA_ARCH_LIST : ${{ matrix.arch }} 
       - name: Upload assets
         run: |
           cd dist
           for filename in *; do
+            # Rename the file by inserting .post${{ matrix.arch }} directly after "0.7.8"
             new_filename=$(echo "$filename" | sed "s/0.7.8/0.7.8.post${{ matrix.arch }}${{ matrix.torchversion }}${{ matrix.cudaversion }}/")
             mv "$filename" "$new_filename"
             echo "Uploading $new_filename"
