@@ -60,7 +60,12 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
-          
+
+      - name: Install system‐level build deps
+        run: |
+          apt-get update
+          apt-get install -y python3.11-dev ninja-build
+            
       - name: Install GitHub CLI
         run: |
           apt-get update
@@ -77,7 +82,7 @@ jobs:
           ls -R
       - name: Install Wheel  
         run:
-          python -m pip install setuptools wheel
+          python -m pip install setuptools wheel numpy
       - name: Install Pytorch
         run: |
           python -m pip install torch==2.4.0 --index-url https://download.pytorch.org/whl/cu121
