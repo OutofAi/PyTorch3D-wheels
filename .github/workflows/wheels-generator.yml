@@ -36,16 +36,21 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-22.04
-            cuda: nvidia/cuda:12.1.0-devel-ubuntu22.04
-            cudaversion: 124
-            torchversion: 260
-            arch: 'Ampere' # for a100 on google colab
-          - os: ubuntu-22.04
-            cuda: nvidia/cuda:12.1.0-devel-ubuntu22.04
-            cudaversion: 124
-            torchversion: 260
-            arch: 'Ada' 
+        - os: ubuntu-22.04
+          cuda: nvidia/cuda:12.4.0-devel-ubuntu22.04
+          cudaversion: 124
+          torchversion: 260
+          arch: 'Hopper' 
+          # - os: ubuntu-22.04
+          #   cuda: nvidia/cuda:12.1.0-devel-ubuntu22.04
+          #   cudaversion: 124
+          #   torchversion: 260
+          #   arch: 'Ampere' # for a100 on google colab
+          # - os: ubuntu-22.04
+          #   cuda: nvidia/cuda:12.1.0-devel-ubuntu22.04
+          #   cudaversion: 124
+          #   torchversion: 260
+          #   arch: 'Ada' 
     env:
       build_dir: "build"
       config: "Release"
