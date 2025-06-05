@@ -41,7 +41,7 @@ jobs:
           cudaversion: 126
           torchversion: 271
           arch: 'Hopper'  # for H200 on huggingface spaces
-          ccccccccccccccccccccccccccccccccccc: 3.10
+          pythonversion: 3.10
         # - os: ubuntu-22.04
         #   cuda: nvidia/cuda:12.1.0-devel-ubuntu22.04
         #   cudaversion: 124
