@@ -41,7 +41,7 @@ jobs:
           cudaversion: 126
           torchversion: 271
           arch: 'Hopper'  # for H200 on huggingface spaces
-          pythonversion: 3.10
+          pythonversion: "3.10"
         # - os: ubuntu-22.04
         #   cuda: nvidia/cuda:12.1.0-devel-ubuntu22.04
         #   cudaversion: 124
@@ -72,7 +72,7 @@ jobs:
           apt-get install -y software-properties-common
           add-apt-repository ppa:deadsnakes/ppa -y
           apt-get update
-          apt-get install -y python${{ matrix.pythonversion }}  python${{ matrix.pythonversion }}-distutils python3.11-venv
+          apt-get install -y python${{ matrix.pythonversion }}  python${{ matrix.pythonversion }}-distutils python${{ matrix.pythonversion }}-venv
           
       - name: Install Python development headers
         run: |
@@ -95,7 +95,7 @@ jobs:
           ls -R
       - name: Install Wheel  
         run:
-          python3.11 -m pip install setuptools wheel
+          python${{ matrix.pythonversion }} -m pip install setuptools wheel
       - name: Install Pytorch
         run: |
           python${{ matrix.pythonversion }} -m pip install torch==2.7.1 --index-url https://download.pytorch.org/whl/cu124
