@@ -43,15 +43,15 @@ jobs:
         #   arch: 'Hopper'  # for H200 on huggingface spaces
         #   pythonversion: "3.10"
         - os: ubuntu-22.04
-          cuda: nvidia/cuda:12.4.0-devel-ubuntu22.04
-          cudaversion: 124
-          torchversion: 260
+          cuda: nvidia/cuda:12.6.0-devel-ubuntu22.04
+          cudaversion: 126
+          torchversion: 271
           arch: 'Ampere' # for a100 on google colab
           pythonversion: "3.10"
         - os: ubuntu-22.04
-          cuda: nvidia/cuda:12.4.0-devel-ubuntu22.04
-          cudaversion: 124
-          torchversion: 260
+          cuda: nvidia/cuda:12.6.0-devel-ubuntu22.04
+          cudaversion: 126
+          torchversion: 271
           arch: 'Ada' # for L4 on google colab
           pythonversion: "3.10"
 
@@ -98,7 +98,7 @@ jobs:
           python${{ matrix.pythonversion }} -m pip install setuptools wheel
       - name: Install Pytorch
         run: |
-          python${{ matrix.pythonversion }} -m pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cu${{ matrix.cudaversion }} 
+          python${{ matrix.pythonversion }} -m pip install torch --index-url https://download.pytorch.org/whl/cu${{ matrix.cudaversion }} 
       - name: Generate Wheels
         run: |
           python${{ matrix.pythonversion }} setup.py bdist_wheel --plat-name linux_x86_64
