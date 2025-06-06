@@ -47,13 +47,13 @@ jobs:
           cudaversion: 124
           torchversion: 271
           arch: 'Ampere' # for a100 on google colab
-          pythonversion: 3.10
+          pythonversion: "3.10"
         - os: ubuntu-22.04
           cuda: nvidia/cuda:12.4.0-devel-ubuntu22.04
           cudaversion: 124
           torchversion: 271
           arch: 'Ada' # for L4 on google colab
-          pythonversion: 3.10
+          pythonversion: "3.10"
 
     env:
       build_dir: "build"
