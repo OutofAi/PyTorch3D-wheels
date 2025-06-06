@@ -15,9 +15,7 @@ For A100 GPU
 import pytorch3d
 ```
 
-For H200 GPU
+For Huggingface Spaces add this to your requirements.txt
 ```
-!curl -L "https://github.com/OutofAi/PyTorch3D-wheels/releases/download/0.7.8/pytorch3d-0.7.8.postHopper260124-cp311-cp311-linux_x86_64.whl" -o pytorch3d-0.7.8-cp311-cp311-linux_x86_64.whl
-!pip install pytorch3d-0.7.8-cp311-cp311-linux_x86_64.whl --force-reinstall
-import pytorch3d
+pytorch3d @ https://github.com/OutofAi/PyTorch3D-wheels/releases/download/0.7.8/pytorch3d-0.7.8.postHopper271126-cp310-cp310-linux_x86_64.whl
 ```
