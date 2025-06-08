@@ -1,3 +1,4 @@
+<img src="https://visitor-badge.laobi.icu/badge?page_id=OutofAi/PyTorch3D-wheels">
 This repository facilitates the creation of Python wheel files (.whl) from the Pytorch-3D project to streamline the installation process on Google Colab 
 
 
