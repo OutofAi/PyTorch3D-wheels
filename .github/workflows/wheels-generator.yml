@@ -36,24 +36,24 @@ jobs:
     strategy:
       matrix:
         include:
+        - os: ubuntu-22.04
+          cuda: nvidia/cuda:12.6.0-devel-ubuntu22.04
+          cudaversion: 121
+          torchversion: 220
+          arch: 'Hopper'  # for H200 on huggingface spaces
+          pythonversion: "3.10"
         # - os: ubuntu-22.04
         #   cuda: nvidia/cuda:12.6.0-devel-ubuntu22.04
         #   cudaversion: 126
         #   torchversion: 271
-        #   arch: 'Hopper'  # for H200 on huggingface spaces
+        #   arch: 'Ampere' # for a100 on google colab
         #   pythonversion: "3.10"
-        - os: ubuntu-22.04
-          cuda: nvidia/cuda:12.6.0-devel-ubuntu22.04
-          cudaversion: 126
-          torchversion: 271
-          arch: 'Ampere' # for a100 on google colab
-          pythonversion: "3.10"
-        - os: ubuntu-22.04
-          cuda: nvidia/cuda:12.6.0-devel-ubuntu22.04
-          cudaversion: 126
-          torchversion: 271
-          arch: 'Ada' # for L4 on google colab
-          pythonversion: "3.10"
+        # - os: ubuntu-22.04
+        #   cuda: nvidia/cuda:12.6.0-devel-ubuntu22.04
+        #   cudaversion: 126
+        #   torchversion: 271
+        #   arch: 'Ada' # for L4 on google colab
+        #   pythonversion: "3.10"
 
     env:
       build_dir: "build"
@@ -96,9 +96,20 @@ jobs:
       - name: Install Wheel  
         run:
           python${{ matrix.pythonversion }} -m pip install setuptools wheel
+ 
+      - name: Compute dotted Torch version
+        shell: bash
+        run: |
+          # read the three-digit matrix value
+          RAW="${{ matrix.torchversion }}"
+          # insert dots between each digit
+          DOTTED=$(echo "$RAW" | sed -E 's/(.)(.)(.)/\1.\2.\3/')
+          echo "TORCH_DOTTED=$DOTTED" >> $GITHUB_ENV
+          
       - name: Install Pytorch
         run: |
-          python${{ matrix.pythonversion }} -m pip install torch --index-url https://download.pytorch.org/whl/cu${{ matrix.cudaversion }} 
+          python${{ matrix.pythonversion }} -m pip install torch==${TORCH_DOTTED} --index-url https://download.pytorch.org/whl/cu${{ matrix.cudaversion }} 
+          
       - name: Generate Wheels
         run: |
           python${{ matrix.pythonversion }} setup.py bdist_wheel --plat-name linux_x86_64
