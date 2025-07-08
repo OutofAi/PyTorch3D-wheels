@@ -108,7 +108,8 @@ jobs:
           
       - name: Install Pytorch
         run: |
-          python${{ matrix.pythonversion }} -m pip install torch==${TORCH_DOTTED} --index-url https://download.pytorch.org/whl/cu${{ matrix.cudaversion }} 
+          # python${{ matrix.pythonversion }} -m pip install torch==${TORCH_DOTTED} --index-url https://download.pytorch.org/whl/cu${{ matrix.cudaversion }} 
+          python${{ matrix.pythonversion }} -m pip install torch --index-url https://download.pytorch.org/whl/cu${{ matrix.cudaversion }} 
           
       - name: Generate Wheels
         run: |
