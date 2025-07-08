@@ -36,12 +36,12 @@ jobs:
     strategy:
       matrix:
         include:
-        - os: ubuntu-22.04
-          # cuda: nvidia/cuda:12.6.0-devel-ubuntu22.04
-          # cudaversion: 121
-          # torchversion: 220
-          # arch: 'Hopper'  # for H200 on huggingface spaces
-          # pythonversion: "3.10"
+        # - os: ubuntu-22.04
+        #   cuda: nvidia/cuda:12.6.0-devel-ubuntu22.04
+        #   cudaversion: 124
+        #   torchversion: 271
+        #   arch: 'Hopper'  # for H200 on huggingface spaces
+        #   pythonversion: "3.11"
         - os: ubuntu-22.04
           cuda: nvidia/cuda:12.6.0-devel-ubuntu22.04
           cudaversion: 124
